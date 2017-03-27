@@ -195,6 +195,14 @@ def parseXml(f):
         Itemsfile.write(userID+'`\n')
 
         #following code is for categories
+        categories = []
+        for node in item.getElementsByTagName('Category'):
+            category = getElementText(node)
+            if (category not in categories):
+                categories.append(category)
+        for category in categories:
+            Categoryfile.write(itemID + '`' + category + '\n')
+
 
 
 
