@@ -33,7 +33,7 @@ CREATE TABLE BID(
    itemID   INT NOT NULL,
    userID   STRING NOT NULL,
    bidtime  INT NOT NULL,
-   bidmoney INT NOT NULL,
+   bidmoney REAL NOT NULL,
    PRIMARY KEY (itemID, userID, bidtime)
 );
 

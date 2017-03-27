@@ -224,6 +224,7 @@ def parseXml(f):
                 time = str(time).split(' ')
                 time = datetime.datetime(int(time[0]),int(time[1]),int(time[2]),int(time[3]),int(time[4]),int(time[5])).strftime('%s')
                 amount = getElementTextByTagNameNR(node2 , 'Amount')
+                amount = transformDollar(amount)
                 for node in node2.getElementsByTagName('Bidder'):
                     bidderid = node.getAttribute('UserID')
                     Bidfile.write(itemID + '`' + userID + '`' + time + '`' + amount + '\n')
