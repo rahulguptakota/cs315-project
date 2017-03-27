@@ -25,7 +25,8 @@ CREATE TABLE CATEGORY(
 CREATE TABLE USER(
    userID   STRING  PRIMARY KEY NOT NULL,
    rating   INT,
-   location STRING
+   location STRING,
+   country  STRING
 );
 
 CREATE TABLE BID(

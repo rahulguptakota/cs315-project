@@ -1,9 +1,9 @@
 .separator `
 .open auction.db
 .import Itmes ITEMS
--- .import name.dat CATEGORY
--- .import name.dat USER
--- .import name.dat BID
+.import Category CATEGORY
+.import Users USER
+.import Bid BID
 
 update ITEMS set name = null where name = "NULL";
 update ITEMS set description = null where description = "NULL";

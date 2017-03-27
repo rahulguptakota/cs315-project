@@ -155,9 +155,11 @@ def parseXml(f):
         name = getElementTextByTagNameNR(item,'Name')
         if not name:
             name = 'NULL'
+        name = name.replace('`', ' ')
         Itemsfile.write(name+'`')
         description = getElementTextByTagNameNR(item,'Description')
         description = str(description).replace('\"', ' ')
+        description = str(description).replace('`', ' ')
         if not description:
             description = 'NULL'
         Itemsfile.write(description+'`')
@@ -193,7 +195,7 @@ def parseXml(f):
         userID = item.getElementsByTagName('Seller')[0].getAttribute('UserID')
         if not userID:
             userID = 'NULL'
-        Itemsfile.write(userID+'`\n')
+        Itemsfile.write(userID+'\n')
 
         #following code is for categories
         categories = []
