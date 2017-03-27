@@ -139,27 +139,27 @@ def parseXml(f):
         itemID = item.getAttribute('ItemID')
         if not itemID:
             itemID = 'NULL'
-        Userfile.write(itemID+'`')
+        Itemsfile.write(itemID+'`')
         totbids = getElementTextByTagNameNR(item,'Number_of_Bids')
         if not totbids:
             totbids = 'NULL'
-        Userfile.write(totbids+'`')
+        Itemsfile.write(totbids+'`')
         firstBid = getElementTextByTagNameNR(item,'First_Bid')
         if not firstBid:
             firstBid = 'NULL'
-        Userfile.write(firstBid+'`')
+        Itemsfile.write(firstBid+'`')
         currently = getElementTextByTagNameNR(item,'Currently')
         if not currently:
             currently = 'NULL'
-        Userfile.write(currently+'`')
+        Itemsfile.write(currently+'`')
         name = getElementTextByTagNameNR(item,'Name')
         if not name:
             name = 'NULL'
-        Userfile.write(name+'`')
+        Itemsfile.write(name+'`')
         description = getElementTextByTagNameNR(item,'Description')
         if not description:
             description = 'NULL'
-        Userfile.write(description+'`')
+        Itemsfile.write(description+'`')
         startTime = getElementTextByTagNameNR(item,'Started')
         if not startTime:
             startTime = 'NULL'
@@ -173,7 +173,7 @@ def parseXml(f):
        #     print startTime
             startTime = datetime.datetime(int(startTime[0]),int(startTime[1]),int(startTime[2]),int(startTime[3]),int(startTime[4]),int(startTime[5])).strftime('%s')
         #    print startTime
-        Userfile.write(startTime+'`')
+        Itemsfile.write(startTime+'`')
         endTime = getElementTextByTagNameNR(item,'Ends')
         if not endTime:
             endTime = 'NULL'
@@ -188,11 +188,11 @@ def parseXml(f):
             endTime = datetime.datetime(int(endTime[0]),int(endTime[1]),int(endTime[2]),int(endTime[3]),int(endTime[4]),int(endTime[5])).strftime('%s')
         #    print endTime
 
-        Userfile.write(endTime+'`')
+        Itemsfile.write(endTime+'`')
         userID = item.getElementsByTagName('Seller')[0].getAttribute('UserID')
         if not userID:
             userID = 'NULL'
-        Userfile.write(userID+'`\n')
+        Itemsfile.write(userID+'`\n')
 # currently = transformDollar(getElementTextByTagNameNR(item,'Currently'))
     # buy_price = transformDollar(getElementTextByTagNameNR(item,'Buy_Price'))
     # if (buy_price == ''): buy_price = 'NULL'
