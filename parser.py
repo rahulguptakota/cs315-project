@@ -133,7 +133,7 @@ item elements. Your job is to mirror this functionality to create all of the nec
 def parseXml(f):
     dom = parse(f) # creates a dom object for the supplied xml file
     Items = dom.getElementsByTagName('Item')
-    
+    users = []
 
     for item in Items:
         itemID = item.getAttribute('ItemID') #following code is for items 
@@ -196,6 +196,23 @@ def parseXml(f):
         Itemsfile.write(userID+'`\n')
 
         #following code is for categories
+        categories = []
+        for node in item.getElementsByTagName('Category'):
+            category = getElementText(node)
+            if (category not in categories):
+                categories.append(category)
+        for category in categories:
+            Categoryfile.write(itemID + '`' + category + '\n')
+        # following code is for Users
+        seller = item.getElementsByTagName('Seller')[0]
+        userID = seller.getAttribute('UserID')
+        if userID not in users:
+            users.append(userID)
+            rating = seller.getAttribute('Rating')
+            location = getElementTextByTagNameNR(item, 'Location')
+            country = getElementTextByTagNameNR(item, 'Country')
+            Userfile.write(userID + '`' + rating + '`' + location + '`' + country + '\n')
+        
 
 
 
