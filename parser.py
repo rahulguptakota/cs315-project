@@ -214,6 +214,20 @@ def parseXml(f):
             location = getElementTextByTagNameNR(item, 'Location')
             country = getElementTextByTagNameNR(item, 'Country')
             Userfile.write(userID + '`' + rating + '`' + location + '`' + country + '\n')
+        #code for bidders
+        for node1 in item.getElementsByTagName('Bids'):
+            for node2 in node1.getElementsByTagName('Bid'):
+                time = getElementTextByTagNameNR(node2 , 'Time')
+                time = transformDttm(time)
+                time = str(time).replace('-',' ')
+                time = str(time).replace(':',' ')
+                time = str(time).split(' ')
+                time = datetime.datetime(int(time[0]),int(time[1]),int(time[2]),int(time[3]),int(time[4]),int(time[5])).strftime('%s')
+                amount = getElementTextByTagNameNR(node2 , 'Amount')
+                for node in node2.getElementsByTagName('Bidder'):
+                    bidderid = node.getAttribute('UserID')
+                    Bidfile.write(itemID + '`' + userID + '`' + time + '`' + amount + '\n')
+       
         
 
 
