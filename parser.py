@@ -137,26 +137,27 @@ def parseXml(f):
 
     for item in Items:
         itemID = item.getAttribute('ItemID') #following code is for items 
-        if not itemID:
-            itemID = 'NULL'
+        # if not itemID:
+        #     itemID = 'NULL'
         Itemsfile.write(itemID+'`')
         totbids = getElementTextByTagNameNR(item,'Number_of_Bids')
-        if not totbids:
-            totbids = 'NULL'
+        # if not totbids:
+        #     totbids = 'NULL'
         Itemsfile.write(totbids+'`')
         firstBid = getElementTextByTagNameNR(item,'First_Bid')
-        if not firstBid:
-            firstBid = 'NULL'
+        # if not firstBid:
+        #     firstBid = 'NULL'
         Itemsfile.write(firstBid+'`')
         currently = getElementTextByTagNameNR(item,'Currently')
-        if not currently:
-            currently = 'NULL'
+        # if not currently:
+            # currently = 'NULL'
         Itemsfile.write(currently+'`')
         name = getElementTextByTagNameNR(item,'Name')
         if not name:
             name = 'NULL'
         Itemsfile.write(name+'`')
         description = getElementTextByTagNameNR(item,'Description')
+        description = str(description).replace('\"', ' ')
         if not description:
             description = 'NULL'
         Itemsfile.write(description+'`')
