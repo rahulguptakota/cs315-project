@@ -1,14 +1,11 @@
-
 """
 FILE: skeleton_parser.py
 ------------------
 Author: Garrett Schlesinger (gschles@cs.stanford.edu)
 Author: Chenyu Yang (chenyuy@stanford.edu)
 Modified: 10/13/2012
-
 Skeleton parser for cs145 programming project 1. Has useful imports and
 functions for parsing, including:
-
 1) Directory handling -- the parser takes a list of eBay xml files
 and opens each file inside of a loop. You just need to fill in the rest.
 2) Dollar value conversions -- the xml files store dollar value amounts in 
@@ -25,19 +22,21 @@ is not of #PCDATA type)
 6) A function to get all elements of a specific tag name that are children of a
 given element
 7) A function to get only the first such child
-
 Your job is to implement the parseXml function, which is invoked on each file by
 the main function. We create the dom for you; the rest is up to you! Get familiar 
 with the functions at http://docs.python.org/library/xml.dom.minidom.html and 
 http://docs.python.org/library/xml.dom.html
-
 Happy parsing!
 """
 
 import sys
+import datetime
 from xml.dom.minidom import parse
 from re import sub
-
+Itemsfile = open('Itmes', 'w')
+Categoryfile = open('Category', 'w')
+Userfile = open('Users','w')
+Bidfile = open('Bid','w')
 columnSeparator = "<>"
 
 # Dictionary of months used for date transformation
@@ -133,6 +132,80 @@ item elements. Your job is to mirror this functionality to create all of the nec
 """
 def parseXml(f):
     dom = parse(f) # creates a dom object for the supplied xml file
+    Items = dom.getElementsByTagName('Item')
+    
+
+    for item in Items:
+        itemID = item.getAttribute('ItemID')
+        if not itemID:
+            itemID = 'NULL'
+        Userfile.write(itemID+'`')
+        totbids = getElementTextByTagNameNR(item,'Number_of_Bids')
+        if not totbids:
+            totbids = 'NULL'
+        Userfile.write(totbids+'`')
+        firstBid = getElementTextByTagNameNR(item,'First_Bid')
+        if not firstBid:
+            firstBid = 'NULL'
+        Userfile.write(firstBid+'`')
+        currently = getElementTextByTagNameNR(item,'Currently')
+        if not currently:
+            currently = 'NULL'
+        Userfile.write(currently+'`')
+        name = getElementTextByTagNameNR(item,'Name')
+        if not name:
+            name = 'NULL'
+        Userfile.write(name+'`')
+        description = getElementTextByTagNameNR(item,'Description')
+        if not description:
+            description = 'NULL'
+        Userfile.write(description+'`')
+        startTime = getElementTextByTagNameNR(item,'Started')
+        if not startTime:
+            startTime = 'NULL'
+        else:
+            #print startTime
+            startTime = transformDttm(startTime)
+            #print startTime
+            startTime = str(startTime).replace('-',' ')
+            startTime = str(startTime).replace(':',' ')
+            startTime = str(startTime).split(' ')
+       #     print startTime
+            startTime = datetime.datetime(int(startTime[0]),int(startTime[1]),int(startTime[2]),int(startTime[3]),int(startTime[4]),int(startTime[5])).strftime('%s')
+        #    print startTime
+        Userfile.write(startTime+'`')
+        endTime = getElementTextByTagNameNR(item,'Ends')
+        if not endTime:
+            endTime = 'NULL'
+        else:
+            #print startTime
+            endTime = transformDttm(endTime)
+            #print startTime
+            endTime = str(endTime).replace('-',' ')
+            endTime = str(endTime).replace(':',' ')
+            endTime = str(endTime).split(' ')
+        #    print endTime
+            endTime = datetime.datetime(int(endTime[0]),int(endTime[1]),int(endTime[2]),int(endTime[3]),int(endTime[4]),int(endTime[5])).strftime('%s')
+        #    print endTime
+
+        Userfile.write(endTime+'`')
+        userID = item.getElementsByTagName('Seller')[0].getAttribute('UserID')
+        if not userID:
+            userID = 'NULL'
+        Userfile.write(userID+'`\n')
+# currently = transformDollar(getElementTextByTagNameNR(item,'Currently'))
+    # buy_price = transformDollar(getElementTextByTagNameNR(item,'Buy_Price'))
+    # if (buy_price == ''): buy_price = 'NULL'
+    # first_bid = transformDollar(getElementTextByTagNameNR(item, 'First_Bid'))
+    # started = transformDttm(getElementTextByTagNameNR(item, 'Started'))
+    # ends = transformDttm(getElementTextByTagNameNR(item, 'Ends'))
+    # description = getElementTextByTagNameNR(item, 'Description')
+
+    # writeLine(item_file, [itemID, name, currently, buy_price, first_bid, started, ends, sellerID, description])
+
+
+
+
     """
     TO DO: traverse the dom tree to extract information for your SQL tables
     """
