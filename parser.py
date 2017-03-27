@@ -136,7 +136,7 @@ def parseXml(f):
     
 
     for item in Items:
-        itemID = item.getAttribute('ItemID')
+        itemID = item.getAttribute('ItemID') #following code is for items 
         if not itemID:
             itemID = 'NULL'
         Itemsfile.write(itemID+'`')
@@ -193,15 +193,8 @@ def parseXml(f):
         if not userID:
             userID = 'NULL'
         Itemsfile.write(userID+'`\n')
-# currently = transformDollar(getElementTextByTagNameNR(item,'Currently'))
-    # buy_price = transformDollar(getElementTextByTagNameNR(item,'Buy_Price'))
-    # if (buy_price == ''): buy_price = 'NULL'
-    # first_bid = transformDollar(getElementTextByTagNameNR(item, 'First_Bid'))
-    # started = transformDttm(getElementTextByTagNameNR(item, 'Started'))
-    # ends = transformDttm(getElementTextByTagNameNR(item, 'Ends'))
-    # description = getElementTextByTagNameNR(item, 'Description')
 
-    # writeLine(item_file, [itemID, name, currently, buy_price, first_bid, started, ends, sellerID, description])
+        #following code is for categories
 
 
 
