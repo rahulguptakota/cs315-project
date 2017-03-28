@@ -1,6 +1,6 @@
 .separator `
 .open auction.db
-.import Itmes ITEMS
+.import Items ITEMS
 .import Category CATEGORY
 .import Users USER
 .import Bid BID
