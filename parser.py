@@ -130,10 +130,11 @@ def transformDollar(money):
 Parses a single xml file. Currently, there's a loop that shows how to parse
 item elements. Your job is to mirror this functionality to create all of the necessary SQL tables
 """
+users = []
+
 def parseXml(f):
     dom = parse(f) # creates a dom object for the supplied xml file
     Items = dom.getElementsByTagName('Item')
-    users = []
 
     for item in Items:
         itemID = item.getAttribute('ItemID') #following code is for items 
@@ -211,8 +212,8 @@ def parseXml(f):
         if userID not in users:
             users.append(userID)
             rating = seller.getAttribute('Rating')
-            location = getElementTextByTagNameNR(item, 'Location')
-            country = getElementTextByTagNameNR(item, 'Country')
+            location = getElementTextByTagNameNR(item, 'Location').replace('`',"'")
+            country = getElementTextByTagNameNR(item, 'Country').replace('`',"'")
             Userfile.write(userID + '`' + rating + '`' + location + '`' + country + '\n')
         #code for bidders
         for node1 in item.getElementsByTagName('Bids'):
