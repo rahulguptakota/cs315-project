@@ -33,7 +33,7 @@ import sys
 import datetime
 from xml.dom.minidom import parse
 from re import sub
-Itemsfile = open('Itmes', 'w')
+Itemsfile = open('Items', 'w')
 Categoryfile = open('Category', 'w')
 Userfile = open('Users','w')
 Bidfile = open('Bid','w')
