@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-import sys; sys.path.insert(0, "lib") # this line is necessary for the rest
+import sys; 
+sys.path.insert(0, "/home/shubham/Documents/DBMS/project_auctionbase/cs315-project/cgi-bin/lib") # this line is necessary for the rest
 import os                             # of the imports to work!
-
 import web
 import sqlitedb
 from jinja2 import Environment, FileSystemLoader
@@ -52,6 +52,7 @@ def render_template(template_name, **context):
 
 urls = ('/currtime', 'curr_time',
         '/selecttime', 'select_time',
+        '/addbids' , 'add_bids',
         # TODO: add additional URLs here
         # first parameter => URL, second parameter => class name
         )
@@ -82,7 +83,7 @@ class select_time:
         yyyy = post_params['yyyy']
         HH = post_params['HH']
         mm = post_params['mm']
-        ss = post_params['ss'];
+        ss = post_params['ss']
         enter_name = post_params['entername']
 
 
@@ -93,6 +94,24 @@ class select_time:
         # Here, we assign `update_message' to `message', which means
         # we'll refer to it in our template as `message'
         return render_template('select_time.html', message = update_message)
+
+class add_bids:
+    def GET(self):
+        return render_template('add_bids.html')
+    
+    def POST(self):
+        post_params = web.input()
+        itemId = post_params['itemId']
+        userId = post_params['userId']
+        price = post_params['price']
+        currtime = 1
+        if(sqlitedb.addbid(itemId,userId,price,currtime)):
+            update_message = "Sucess"
+        else:
+            update_message = "Fail"
+        return render_template('add_bids.html', message = update_message)
+
+
 
 ###########################################################################################
 ##########################DO NOT CHANGE ANYTHING BELOW THIS LINE!##########################
