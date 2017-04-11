@@ -64,7 +64,7 @@ def searchDB(kd):
     itemID = "I.itemID = $itemID"
     category = "C.name = $category AND I.itemID C.itemID"
     currently = "I.currently = $currently"
-    status = getStatus(mp['status'])
+    status = getStatusString(kd['status'])
     description = "I.description LIKE $description"
     if "description" in kd:
         kd["description"] = "%"+kd["description"]+"%"

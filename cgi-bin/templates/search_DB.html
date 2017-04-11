@@ -1,0 +1,31 @@
+{% extends "app_base.html" %}
+{% block content %}
+<h3> SEARCH DATABASE </h3> 
+<form action="searchDB" method="POST">
+  ItemId: <input type="text" name="itemId" id="itemId"><br>
+  Category: <input type="text" name="category" id="category"><br>
+  Price: <input type="text" name="currently" id="currently"><br>
+  Description: <input type="text" name="description" id="description"><br>
+  Status: <input type="text" name="status" id="status"><br>
+  <input type="submit" value="SEARCH">
+</form>
+</center>
+
+{% if result %}
+	<h3>Result</h3>
+    <ul>
+    {% for item in result %}
+        <li>
+            <p>{{ item.itemId }}</p>
+        </li>
+    {% endfor %}
+    </ul>
+</center>
+<h3>Result</h3>
+{% endif %}
+{% if message %}
+<div class="alert alert-success">{{ message }}</div>
+{% endif %}
+
+
+{% endblock %}
