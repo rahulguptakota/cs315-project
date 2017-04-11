@@ -33,10 +33,11 @@ def transaction():
 def getTime():
     # TODO: update the query string to match
     # the correct column and table name in your database
-    query_string = 'select currtime from Time'
+    query_string = 'select currtime from TIME'
     results = query(query_string)
     # alternatively: return results[0]['currenttime']
-    return results[0].currtime # TODO: update this as well to match the
+    # print results[0]['currtime'], " i am getTime"
+    return int(results[0]['currtime']) # TODO: update this as well to match the
                                   # column name
 
 # returns a single item specified by the Item's ID in the database
@@ -76,12 +77,34 @@ def query(query_string, vars = {}):
 #TODO: additional methods to interact with your database,
 # e.g. to update the current time
 
+def getOpenAuctions():
+    query_string = "select * from ITEMS where startTime > "+ str(1)+" AND endTime < "+ str(getTime())
+    result = query(query_string)
+    print result[0]
+    return result
+
+def getClosedAuctions():
+    query_string = "select * from ITEMS where endTime < "+ str(getTime())
+    result = query(query_string)
+    return result
+
 def startprocesses():
+    start()
+
+def start():
+    print "hello"
+    query_string = "delete from TIME"
+    query(query_string)
+    query_string = " insert into TIME values (1)"#+ int(time.time())
+    query(query_string)
     starttiming()
 
 def starttiming():
-    threading.Timer(1, starttiming).start()
-    querystr = "update TIME set currtime = " + int(time.time())
+    print "hello"
+    threading.Timer(1.0, starttiming).start()
+    query_string = "update TIME set currtime = " + str(int(time.time()))
+    query(query_string)
+    print query_string, "this is query string"
 
 def addbid(itemId,userId,price,currtime):
     if db.insert('BID',  itemID=itemId,userID=userId,bidtime=currtime,bidmoney=price):

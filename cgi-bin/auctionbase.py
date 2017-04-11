@@ -53,6 +53,7 @@ def render_template(template_name, **context):
 urls = ('/currtime', 'curr_time',
         '/selecttime', 'select_time',
         '/addbids' , 'add_bids',
+		'/openbids', 'open_bids',
         # TODO: add additional URLs here
         # first parameter => URL, second parameter => class name
         )
@@ -114,15 +115,18 @@ class add_bids:
             update_message = "Fail"
         return render_template('add_bids.html', message = update_message)
 
-
+class open_bids:
+	def GET(self):
+		return render_template('open_bids.html', result = sqlitedb.getOpenAuctions())
 
 ###########################################################################################
 ##########################DO NOT CHANGE ANYTHING BELOW THIS LINE!##########################
 ###########################################################################################
 
 if __name__ == '__main__':
+	print "hi there"
 	web.internalerror = web.debugerror
 	app = web.application(urls, globals())
 	app.add_processor(web.loadhook(sqlitedb.enforceForeignKey))
-	app.run()
 	sqlitedb.startprocesses()
+	app.run()
