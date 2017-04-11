@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys; 
-sys.path.insert(0, "/home/grahul/cs315/cs315-project/cgi-bin/lib") # this line is necessary for the rest
+sys.path.insert(0, "lib") # this line is necessary for the rest
 import os                             # of the imports to work!
 import web
 import sqlitedb
@@ -101,10 +101,13 @@ class add_bids:
     
     def POST(self):
         post_params = web.input()
-        itemId = post_params['itemId']
+        itemId = int(post_params['itemId'])
         userId = post_params['userId']
-        price = post_params['price']
+        price = float(post_params['price'])
         currtime = 1
+        if (itemId == '') or (price == '') or (userId == ''):
+            return render_template('add_bid.html', message = 'You must fill out every field')
+        
         if(sqlitedb.addbid(itemId,userId,price,currtime)):
             update_message = "Sucess"
         else:
