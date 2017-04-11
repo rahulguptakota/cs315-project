@@ -9,4 +9,3 @@ clean:
 sql: Users Items Bid Category
 	sqlite3 < create_tables.sql
 	sqlite3 < import_data.sql
-	sqlite3 < triggers.sql
