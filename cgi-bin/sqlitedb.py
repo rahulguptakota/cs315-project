@@ -33,7 +33,7 @@ def transaction():
 def getTime():
     # TODO: update the query string to match
     # the correct column and table name in your database
-    query_string = 'select currtime from Time'
+    query_string = 'select currtime from TIME'
     results = query(query_string)
     # alternatively: return results[0]['currenttime']
     return results[0].currtime # TODO: update this as well to match the
@@ -47,6 +47,33 @@ def getItemById(item_id):
     query_string = 'select * from Items where item_ID = $itemID'
     result = query(query_string, {'itemID': item_id})
     return result[0]
+
+def searchDB(kd):
+    def getStatusString(status):
+        if status == "open":
+            return "I.startTime <= $time AND I.endTime > $time"
+        elif status == "close":
+            return "I.endTime <= $time"
+        elif status == "notStarted":
+            return "I.startTime > $time"
+        else:
+            return "1 = 1"
+    keys = ["itemID","category","currently","description","status"]        
+    query_string = "SELECT * FROM ITEM I, CATEGORY C WHERE "
+    conjunction = []
+    itemID = "I.itemID = $itemID"
+    category = "C.name = $category AND I.itemID C.itemID"
+    currently = "I.currently = $currently"
+    status = getStatus(mp['status'])
+    description = "I.description LIKE $description"
+    if "description" in kd:
+        kd["description"] = "%"+kd["description"]+"%"
+    for key in keys:
+        if key in kd:
+            conjunction.append(locals()[key]) 
+    predicate = " AND ".join(conjunction)
+    query_string = query_string + predicate
+    return query(query_string,{"itemID": kd["itemID"],"category": kd["category"],"currently": kd["currently"],"description": kd["description"],"time": getTime()})
 
 # helper method to determine whether query result is empty
 # Sample use:
