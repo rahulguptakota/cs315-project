@@ -5,7 +5,6 @@ drop table if exists USER;
 drop table if exists BID;
 drop table if exists TIME;
 
-
 CREATE TABLE USER(
    userID   STRING  PRIMARY KEY NOT NULL,
    rating   INT,
@@ -44,7 +43,6 @@ CREATE TABLE ITEMS(
    userID   STRING NOT NULL,
    FOREIGN KEY(userID) REFERENCES USER(userID)
 );
-
 
 create table TIME(
     currtime string PRIMARY KEY
