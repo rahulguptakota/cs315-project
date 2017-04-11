@@ -1,0 +1,6 @@
+print('Content-Type: text/html')
+print( '<html>')
+print( '<head></head>')
+print( '<body>')
+print( '<h2>Hello World</h2>')
+print( '</body></html>')
