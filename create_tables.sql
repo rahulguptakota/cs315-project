@@ -47,6 +47,6 @@ CREATE TABLE ITEMS(
 
 
 create table TIME(
-    currtime string PRIMARY KEY
+    currtime INT PRIMARY KEY
     );
 

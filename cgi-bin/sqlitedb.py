@@ -1,7 +1,8 @@
 import web
-
+import threading
+import time
 db = web.database(dbn='sqlite',
-        db='auctionDB.db' #TODO: add your SQLite database filename
+        db='auction.db' #TODO: add your SQLite database filename
     )
 
 ######################BEGIN HELPER METHODS######################
@@ -74,3 +75,12 @@ def query(query_string, vars = {}):
 
 #TODO: additional methods to interact with your database,
 # e.g. to update the current time
+def startprocesses():
+    starttiming()
+
+def starttiming():
+    threading.Timer(1, starttiming).start()
+    querystr = "update TIME set currtime = " + int(time.time())
+
+
+    
