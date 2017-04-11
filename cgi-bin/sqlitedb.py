@@ -75,6 +75,7 @@ def query(query_string, vars = {}):
 
 #TODO: additional methods to interact with your database,
 # e.g. to update the current time
+<<<<<<< HEAD
 def startprocesses():
     starttiming()
 
@@ -84,3 +85,11 @@ def starttiming():
 
 
     
+=======
+
+def addbid(itemId,userId,price,currtime):
+    if db.insert('BID',  itemID=itemId,userID=userId,bidtime=currtime,bidmoney=price):
+        return True
+    else:
+        return False
+>>>>>>> 8dc011bfcfff6efe4d4f6c26f2eb2385b3dc67c1

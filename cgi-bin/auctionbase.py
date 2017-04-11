@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-import sys; sys.path.insert(0, "lib") # this line is necessary for the rest
+import sys; 
+sys.path.insert(0, "/home/shubham/Documents/DBMS/project_auctionbase/cs315-project/cgi-bin/lib") # this line is necessary for the rest
 import os                             # of the imports to work!
-
 import web
 import sqlitedb
 from jinja2 import Environment, FileSystemLoader
@@ -51,10 +51,18 @@ def render_template(template_name, **context):
 #####################END HELPER METHODS#####################
 
 urls = ('/currtime', 'curr_time',
+<<<<<<< HEAD
 		'/selecttime', 'select_time',
 		# TODO: add additional URLs here
 		# first parameter => URL, second parameter => class name
 		)
+=======
+        '/selecttime', 'select_time',
+        '/addbids' , 'add_bids',
+        # TODO: add additional URLs here
+        # first parameter => URL, second parameter => class name
+        )
+>>>>>>> 8dc011bfcfff6efe4d4f6c26f2eb2385b3dc67c1
 
 class curr_time:
 	# A simple GET request, to '/currtime'
@@ -66,6 +74,7 @@ class curr_time:
 		return render_template('curr_time.html', time = current_time)
 
 class select_time:
+<<<<<<< HEAD
 	# Aanother GET request, this time to the URL '/selecttime'
 	def GET(self):
 		return render_template('select_time.html')
@@ -93,6 +102,53 @@ class select_time:
 		# Here, we assign `update_message' to `message', which means
 		# we'll refer to it in our template as `message'
 		return render_template('select_time.html', message = update_message)
+=======
+    # Aanother GET request, this time to the URL '/selecttime'
+    def GET(self):
+        return render_template('select_time.html')
+
+    # A POST request
+    #
+    # You can fetch the parameters passed to the URL
+    # by calling `web.input()' for **both** POST requests
+    # and GET requests
+    def POST(self):
+        post_params = web.input()
+        MM = post_params['MM']
+        dd = post_params['dd']
+        yyyy = post_params['yyyy']
+        HH = post_params['HH']
+        mm = post_params['mm']
+        ss = post_params['ss']
+        enter_name = post_params['entername']
+
+
+        selected_time = '%s-%s-%s %s:%s:%s' % (yyyy, MM, dd, HH, mm, ss)
+        update_message = '(Hello, %s. Previously selected time was: %s.)' % (enter_name, selected_time)
+        # TODO: save the selected time as the current time in the database
+
+        # Here, we assign `update_message' to `message', which means
+        # we'll refer to it in our template as `message'
+        return render_template('select_time.html', message = update_message)
+>>>>>>> 8dc011bfcfff6efe4d4f6c26f2eb2385b3dc67c1
+
+class add_bids:
+    def GET(self):
+        return render_template('add_bids.html')
+    
+    def POST(self):
+        post_params = web.input()
+        itemId = post_params['itemId']
+        userId = post_params['userId']
+        price = post_params['price']
+        currtime = 1
+        if(sqlitedb.addbid(itemId,userId,price,currtime)):
+            update_message = "Sucess"
+        else:
+            update_message = "Fail"
+        return render_template('add_bids.html', message = update_message)
+
+
 
 ###########################################################################################
 ##########################DO NOT CHANGE ANYTHING BELOW THIS LINE!##########################

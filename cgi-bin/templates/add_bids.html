@@ -1,0 +1,17 @@
+{% extends "app_base.html" %}
+{% block content %}
+<h3> Add BID </h3> 
+<form action="addbids" method="POST">
+  ItemId: <input type="text" name="itemId" id="itemId"><br>
+  UserId: <input type="text" name="userId" id="userId"><br>
+  Price: <input type="number" name="price" id="price"><br>
+  <input type="submit" value="ADDBID">
+</form>
+</center>
+<h3>Result</h3>
+{% if message %}
+<div class="alert alert-success">{{ message }}</div>
+{% endif %}
+
+
+{% endblock %}
