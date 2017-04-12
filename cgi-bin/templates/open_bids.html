@@ -1,0 +1,19 @@
+{% extends "app_base.html" %}
+{% block content %}
+<center>
+<h3> Open Bids </h3> 
+{% if result %}
+    <ul>
+    {% for item in result %}
+        <li>
+            <p>{{ item.itemID }}</p>
+            <p>{{item.name}} </p>
+        </li>
+    {% endfor %}
+    </ul>
+</center>
+<h3>Result</h3>
+{% endif %}
+
+
+{% endblock %}

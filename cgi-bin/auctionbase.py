@@ -51,12 +51,26 @@ def render_template(template_name, **context):
 #####################END HELPER METHODS#####################
 
 urls = ('/currtime', 'curr_time',
-		'/selecttime', 'select_time',
-		'/addbids' , 'add_bids',
+        '/selecttime', 'select_time',
+        '/addbids' , 'add_bids',
+		'/openbids', 'open_bids',
 		'/searchDB' , 'search_DB',
+		'/auction_search', 'auction_search',
 		# TODO: add additional URLs here
 		# first parameter => URL, second parameter => class name
 		)
+
+class auction_search:
+	def GET(self):
+		return render_template('auction_search.html')
+
+	def POST(self):
+		post_params = web.input()
+		itemIdraw = post_params['itemId']
+		itemId = int(post_params['itemId'])
+		itemInfo = sqlitedb.getItem(itemId)
+		return render_template('auction_search.html', message = itemInfo)	
+
 
 class search_DB:
 	def GET(self):
@@ -64,14 +78,18 @@ class search_DB:
 
 	def POST(self):
 		post_params = web.input()
+		itemIdraw = post_params['itemId']
 		itemId = int(post_params['itemId'])
 		category = post_params['category']
-		price = int(post_params['currently'])
+		if post_params['currently']:
+			price = int(post_params['currently'])
+		else:
+			price = ""
 		description = post_params['description']
 		status = post_params['status']
 		kd = {"itemID": itemId, "category": category, "currently": price, "description": description, "status": status}
 		results = sqlitedb.searchDB(kd)
-		return render_template('add_bids.html', message = results)	
+		return render_template('search_DB.html', message = results)	
 
 class curr_time:
 	# A simple GET request, to '/currtime'
@@ -130,15 +148,18 @@ class add_bids:
 			update_message = "Fail"
 		return render_template('add_bids.html', message = update_message)
 
-
+class open_bids:
+	def GET(self):
+		return render_template('open_bids.html', result = sqlitedb.getOpenAuctions())
 
 ###########################################################################################
 ##########################DO NOT CHANGE ANYTHING BELOW THIS LINE!##########################
 ###########################################################################################
 
 if __name__ == '__main__':
+	print "hi there"
 	web.internalerror = web.debugerror
 	app = web.application(urls, globals())
 	app.add_processor(web.loadhook(sqlitedb.enforceForeignKey))
-	app.run()
 	sqlitedb.startprocesses()
+	app.run()
