@@ -68,12 +68,25 @@ def searchDB(kd):
     description = "I.description LIKE $description"
     if "description" in kd:
         kd["description"] = "%"+kd["description"]+"%"
+    if "itemID" not in kd:
+    	itemID = "1=1"
+    if "category" not in kd:
+    	category = "1=1"
+    if "currently" not in kd:
+    	currently = "1=1"
+    if "status" not in kd:
+    	status = "1=1"	
+    if "description" not in kd:
+    	description = "1=1"				
+
     for key in keys:
         if key in kd:
             conjunction.append(locals()[key]) 
     predicate = " AND ".join(conjunction)
     query_string = query_string + predicate
     return query(query_string,{"itemID": kd["itemID"],"category": kd["category"],"currently": kd["currently"],"description": kd["description"],"time": getTime()})
+	
+
 
 # helper method to determine whether query result is empty
 # Sample use:
