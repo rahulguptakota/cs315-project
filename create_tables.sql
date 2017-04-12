@@ -39,7 +39,7 @@ CREATE TABLE ITEMS(
    name STRING,
    description  STRING,
    startTime    INT NOT NULL,
-   endTime  INT NOT NULL,
+   endTime  INT NOT NULL check(endTime > startTime),
    userID   STRING NOT NULL,
    FOREIGN KEY(userID) REFERENCES USER(userID)
 );

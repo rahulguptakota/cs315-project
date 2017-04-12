@@ -33,7 +33,7 @@ def transaction():
 def getTime():
     # TODO: update the query string to match
     # the correct column and table name in your database
-    query_string = 'select currtime from Time'
+    query_string = 'select currtime from TIME'
     results = query(query_string)
     # alternatively: return results[0]['currenttime']
     return results[0].currtime # TODO: update this as well to match the

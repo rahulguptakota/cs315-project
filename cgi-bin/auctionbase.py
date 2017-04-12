@@ -104,10 +104,11 @@ class add_bids:
         itemId = int(post_params['itemId'])
         userId = post_params['userId']
         price = float(post_params['price'])
-        currtime = 1
+        currtime = sqlitedb.getTime()
         if (itemId == '') or (price == '') or (userId == ''):
             return render_template('add_bid.html', message = 'You must fill out every field')
         
+
         if(sqlitedb.addbid(itemId,userId,price,currtime)):
             update_message = "Sucess"
         else:
