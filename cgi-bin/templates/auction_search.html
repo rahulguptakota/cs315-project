@@ -1,0 +1,27 @@
+{% extends "app_base.html" %}
+{% block content %}
+<h3> SEARCH AUCTION </h3> 
+<form action="auction_search" method="POST">
+  ItemId: <input type="text" name="itemId" id="itemId"><br>
+  <input type="submit" value="SEARCH">
+</form>
+</center>
+
+{% if result %}
+	<h3>Result</h3>
+    <ul>
+    {% for item in result %}
+        <li>
+            <p>{{ item }}</p>
+            <!--<p>{{ item.description }}</p>-->
+        </li>
+    {% endfor %}
+    </ul>
+</center>
+{% endif %}
+<!--{% if message %}
+<div class="alert alert-success">{{ message }}</div>
+{% endif %}-->
+
+
+{% endblock %}

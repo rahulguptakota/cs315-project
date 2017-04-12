@@ -88,6 +88,33 @@ def searchDB(kd):
     print query_string
     return query(query_string,{"itemID": kd["itemID"],"category": kd["category"],"currently": kd["currently"],"description": kd["description"],"time": getTime()})
 
+def getItem(item):
+	query_string = "SELECT itemID, startTime, endTime FROM ITEMS WHERE itemID=$itemID"
+	results = query(query_string,{"itemID": item})
+	print results
+	return results
+
+def getItemInfo(item):
+	t = transaction()
+	try:
+		status = "Open"
+		if getTime() < item["startTime"]:
+			status = "Not Started"
+		if getTime() > item["endTime"]:
+			status = "Closed"
+		query_string = "SELECT * FROM BID WHERE itemID = $itemID ORDER BY bidmoney DESC"
+		bids = query(query_string,{"itemID": item["itemID"]})		
+		winner = "There is no winner"
+		if len(bids) > 0 and status == "Closed":
+			winner = bids[0]["userID"]
+	except Exception as e:
+		t.rollback()
+		return (str(e),"","")
+	else:
+		t.commit()
+	return (status,winner,bids)	
+
+
 # helper method to determine whether query result is empty
 # Sample use:
 # query_result = sqlitedb.query('select currenttime from Time')

@@ -16,16 +16,17 @@
     <ul>
     {% for item in result %}
         <li>
-            <p>{{ item.itemId }}</p>
+            <p>{{ item }}</p>
+            <p>{{ result[item] }}</p>
         </li>
     {% endfor %}
     </ul>
 </center>
+{% endif %}
+<!--{% if message %}
 <h3>Result</h3>
-{% endif %}
-{% if message %}
 <div class="alert alert-success">{{ message }}</div>
-{% endif %}
+{% endif %}-->
 
 
 {% endblock %}

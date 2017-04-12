@@ -55,9 +55,22 @@ urls = ('/currtime', 'curr_time',
         '/addbids' , 'add_bids',
 		'/openbids', 'open_bids',
 		'/searchDB' , 'search_DB',
+		'/auction_search', 'auction_search',
 		# TODO: add additional URLs here
 		# first parameter => URL, second parameter => class name
 		)
+
+class auction_search:
+	def GET(self):
+		return render_template('auction_search.html')
+
+	def POST(self):
+		post_params = web.input()
+		itemIdraw = post_params['itemId']
+		itemId = int(post_params['itemId'])
+		itemInfo = sqlitedb.getItem(itemId)
+		return render_template('auction_search.html', message = itemInfo)	
+
 
 class search_DB:
 	def GET(self):
@@ -76,7 +89,7 @@ class search_DB:
 		status = post_params['status']
 		kd = {"itemID": itemId, "category": category, "currently": price, "description": description, "status": status}
 		results = sqlitedb.searchDB(kd)
-		return render_template('search_DB.html', message = results)	
+		return render_template('search_DB.html', result = results[0])	
 
 class curr_time:
 	# A simple GET request, to '/currtime'
