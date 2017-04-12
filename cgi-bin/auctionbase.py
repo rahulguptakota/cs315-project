@@ -69,7 +69,7 @@ class auction_search:
 		itemIdraw = post_params['itemId']
 		itemId = int(post_params['itemId'])
 		itemInfo = sqlitedb.getItem(itemId)
-		return render_template('auction_search.html', message = itemInfo)	
+		return render_template('auction_search.html', result = itemInfo)	
 
 
 class search_DB:
