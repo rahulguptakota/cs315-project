@@ -183,10 +183,25 @@ class add_bids:
 		itemId = int(post_params['itemId'])
 		userId = post_params['userId']
 		price = float(post_params['price'])
-		currtime = 1
+		currtime = sqlitedb.getTime()
 		if (itemId == '') or (price == '') or (userId == ''):
-			return render_template('add_bid.html', message = 'You must fill out every field')
+			return render_template('add_bids.html', message = 'You must fill out every field')
 		
+		user = sqlitedb.getUserById(userId)
+		if user == None:
+			return render_template('add_bids.html', message = 'User does not exist')
+
+		item = sqlitedb.getItemById(itemId)
+
+		if(item == None):
+			return render_template('add_bids.html', message = 'Item does not exists')
+
+		if(item.endTime < currtime):
+			return render_template('add_bids.html', message = 'Auction is ended')
+		
+		if(price < float(item.currently)):
+			return render_template('add_bids.html', message = 'Please give me higher price')
+
 		if(sqlitedb.addbid(itemId,userId,price,currtime)):
 			update_message = "Sucess"
 		else:
