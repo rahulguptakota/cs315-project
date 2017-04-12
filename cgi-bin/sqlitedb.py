@@ -49,6 +49,45 @@ def getItemById(item_id):
     result = query(query_string, {'itemID': item_id})
     return result[0]
 
+def searchDB(kd):
+    def getStatusString(status):
+        if status == "open":
+            return "I.startTime <= $time AND I.endTime > $time"
+        elif status == "close":
+            return "I.endTime <= $time"
+        elif status == "notStarted":
+            return "I.startTime > $time"
+        else:
+            return "1 = 1"
+    keys = ["itemID","category","currently","description","status"]        
+    query_string = "SELECT * FROM ITEMS I, CATEGORY C WHERE "
+    conjunction = []
+    itemID = "I.itemID = $itemID"
+    category = "C.name = $category AND I.itemID = C.itemID"
+    currently = "I.currently = $currently"
+    status = getStatusString(kd['status'])
+    description = "I.description LIKE $description"
+    print kd
+    if "description" in kd:
+        kd["description"] = "%"+kd["description"]+"%"
+    if not kd["itemID"]:
+    	itemID = "1=1"
+    if not kd["category"]:
+    	category = "1=1"
+    if not kd["currently"]:
+    	currently = "1=1"
+    if not kd["status"]:
+    	status = "1=1"	
+    if not kd["description"]:
+    	description = "1=1"				
+    for key in keys:
+        if key in kd:
+            conjunction.append(locals()[key]) 
+    predicate = " AND ".join(conjunction)
+    query_string = query_string + predicate
+    print query_string
+    return query(query_string,{"itemID": kd["itemID"],"category": kd["category"],"currently": kd["currently"],"description": kd["description"],"time": getTime()})
+
 # helper method to determine whether query result is empty
 # Sample use:
 # query_result = sqlitedb.query('select currenttime from Time')
