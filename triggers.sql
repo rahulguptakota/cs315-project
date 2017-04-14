@@ -1,23 +1,9 @@
 .open auction.db
-drop trigger if exists ENDTIME;
 drop trigger if exists RECENTAMOUNT;
 drop trigger if exists SELLERNOTBIDDER;
 drop trigger if exists CORRECTBIDTIME;
 drop trigger if exists BIDNUMBER;
 drop trigger if exists BIDAMOUNT;
-
-create trigger ENDTIME
-after insert ON ITEMS
-for each row
-when exists(
-	SELECT *
-	FROM ITEMS
-	WHERE itemID = new.itemID AND
-	new.startTime >= new.endTime
-)
-begin
-	select raise(rollback, 'An auction can not end before it starts!');
-end;
 
 create trigger RECENTAMOUNT
 after insert ON BID

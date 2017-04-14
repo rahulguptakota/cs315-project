@@ -44,10 +44,16 @@ def getTime():
 # Note: if the `result' list is empty (i.e. there are no items for a
 # a given ID), this will throw an Exception!
 def getItemById(item_id):
-	# TODO: rewrite this method to catch the Exception in case `result' is empty
-	query_string = 'select * from Items where item_ID = $itemID'
-	result = query(query_string, {'itemID': item_id})
-	return result[0]
+    # TODO: rewrite this method to catch the Exception in case `result' is empty
+    query_string = 'select * from ITEMS where itemID = $itemID'
+    result = query(query_string, {'itemID': item_id})
+    return result[0]
+
+
+def getUserById(user_id):
+    query_string = 'select * from USER where userID = $userID'
+    result = query(query_string, {'userID': user_id})
+    return result[0]
 
 def searchDB(kd):
 	def getStatusString(status):
