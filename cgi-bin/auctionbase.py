@@ -53,12 +53,12 @@ def render_template(template_name, **context):
 urls = ('/currtime', 'curr_time',
         '/selecttime', 'select_time',
         '/addbids' , 'add_bids',
-		'/openbids', 'open_bids',
 		'/searchDB' , 'search_DB',
 		'/auction_search', 'auction_search',
 		# TODO: add additional URLs here
 		# first parameter => URL, second parameter => class name
 		)
+				# '/openbids', 'open_bids',
 
 class auction_search:
 	def GET(self):
@@ -69,7 +69,9 @@ class auction_search:
 		itemIdraw = post_params['itemId']
 		itemId = int(post_params['itemId'])
 		itemInfo = sqlitedb.getItem(itemId)
-		return render_template('auction_search.html', result = itemInfo)	
+		results = sqlitedb.getItemInfo(itemInfo)
+		print results
+		return render_template('auction_search.html', result = results )	
 
 
 class search_DB:

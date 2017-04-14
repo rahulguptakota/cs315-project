@@ -9,11 +9,15 @@
 
 {% if result %}
 	<h3>Result</h3>
+    <p> Winner : {{result['winner']}} </p>
+    <p> Status : {{result['status']}} </p>
     <ul>
-    {% for item in result %}
+    {% for item in result['bidlist'] %}
         <li>
-            <p>{{ item }}</p>
-            <p>{{ result[item] }}</p>
+           <p> {{ item['itemID'] }}</p>
+            <p>{{ item['bidtime'] }}</p>
+             <p>{{ item['bidmoney'] }}</p>
+            <p>{{ item['userID'] }}</p>
         </li>
     {% endfor %}
     </ul>
