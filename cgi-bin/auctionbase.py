@@ -53,12 +53,12 @@ def render_template(template_name, **context):
 urls = ('/currtime', 'curr_time',
         '/selecttime', 'select_time',
         '/addbids' , 'add_bids',
-		'/openbids', 'open_bids',
 		'/searchDB' , 'search_DB',
 		'/auction_search', 'auction_search',
 		# TODO: add additional URLs here
 		# first parameter => URL, second parameter => class name
 		)
+				# '/openbids', 'open_bids',
 
 class auction_search:
 	def GET(self):
@@ -66,10 +66,17 @@ class auction_search:
 
 	def POST(self):
 		post_params = web.input()
-		itemIdraw = post_params['itemId']
-		itemId = int(post_params['itemId'])
+		if post_params['itemId']:
+			if post_params['itemId'].isdigit():
+				itemId = int(post_params['itemId'])
+			else:
+				return render_template('auction_search.html', idnotint = "empty")
+		else:
+			return render_template('auction_search.html', idempty = "empty")		
 		itemInfo = sqlitedb.getItem(itemId)
-		return render_template('auction_search.html', result = itemInfo)	
+		results = sqlitedb.getItemInfo(itemInfo)
+		print results
+		return render_template('auction_search.html', result = results )
 
 
 class search_DB:
@@ -78,18 +85,30 @@ class search_DB:
 
 	def POST(self):
 		post_params = web.input()
-		itemIdraw = post_params['itemId']
-		itemId = int(post_params['itemId'])
+		if post_params['itemId']:
+			if post_params['itemId'].isdigit():
+				itemId = int(post_params['itemId'])
+			else:
+				return render_template('search_DB.html', idnotint = "empty")	
+		else:
+			itemId = ""
 		category = post_params['category']
 		if post_params['currently']:
-			price = int(post_params['currently'])
+			price = "$" + (post_params['currently'])
 		else:
 			price = ""
 		description = post_params['description']
 		status = post_params['status']
 		kd = {"itemID": itemId, "category": category, "currently": price, "description": description, "status": status}
-		results = sqlitedb.searchDB(kd)
-		return render_template('search_DB.html', result = results[0])	
+		result = sqlitedb.searchDB(kd)
+		actresult = []
+		for thing in result:
+			actresult.append(thing)
+		print actresult
+		if actresult:
+			return render_template('search_DB.html', result = actresult)	
+		else:
+			return render_template('search_DB.html', message = "empty")
 
 class curr_time:
 	# A simple GET request, to '/currtime'
