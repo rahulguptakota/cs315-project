@@ -91,7 +91,6 @@ def searchDB(kd):
 def getItem(item):
 	query_string = "SELECT itemID, startTime, endTime FROM ITEMS WHERE itemID=$itemID"
 	results = query(query_string,{"itemID": item})
-	print results
 	return results
 
 def getItemInfo(item):
@@ -103,7 +102,7 @@ def getItemInfo(item):
 		if getTime() > item["endTime"]:
 			status = "Closed"
 		query_string = "SELECT * FROM BID WHERE itemID = $itemID ORDER BY bidmoney DESC"
-		bids = query(query_string,{"itemID": item["itemID"]})		
+		bids = query(query_string,{"itemID": item["itemID"]})
 		winner = "There is no winner"
 		if len(bids) > 0 and status == "Closed":
 			winner = bids[0]["userID"]
