@@ -69,15 +69,9 @@ class auction_search:
 		itemIdraw = post_params['itemId']
 		itemId = int(post_params['itemId'])
 		itemInfo = sqlitedb.getItem(itemId)
-<<<<<<< HEAD
-		print "hello world\n"
-		results = sqlitedb.getItemInfo(itemInfo[0])
-		return render_template('auction_search.html', result = results)	
-=======
 		results = sqlitedb.getItemInfo(itemInfo)
 		print results
-		return render_template('auction_search.html', result = results )	
->>>>>>> 6130db57e30380808c79b8f761b9da363e8faace
+		return render_template('auction_search.html', result = results )
 
 
 class search_DB:
@@ -86,18 +80,26 @@ class search_DB:
 
 	def POST(self):
 		post_params = web.input()
-		itemIdraw = post_params['itemId']
-		itemId = int(post_params['itemId'])
+		if post_params['itemId']:
+			if post_params['itemId'].isdigit():
+				itemId = int(post_params['itemId'])
+			else:
+				return render_template('search_DB.html', idnotint = "empty")	
+		else:
+			itemId = ""
 		category = post_params['category']
 		if post_params['currently']:
-			price = int(post_params['currently'])
+			price = "$" + (post_params['currently'])
 		else:
 			price = ""
 		description = post_params['description']
 		status = post_params['status']
 		kd = {"itemID": itemId, "category": category, "currently": price, "description": description, "status": status}
 		results = sqlitedb.searchDB(kd)
-		return render_template('search_DB.html', result = results[0])	
+		if results:
+			return render_template('search_DB.html', result = results[0])	
+		else:
+			return render_template('search_DB.html', message = "empty")
 
 class curr_time:
 	# A simple GET request, to '/currtime'
