@@ -1,0 +1,12 @@
+create trigger BIDAMOUNT
+after insert ON BID
+for each row
+when exists(
+	SELECT *
+	FROM BID
+	WHERE itemID = new.itemID AND
+	bidmoney >= new.bidmoney
+)
+begin
+	select raise(rollback, 'BID amount is less than that of previous amount');
+end;

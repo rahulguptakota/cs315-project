@@ -18,19 +18,6 @@ begin
 	UPDATE ITEMS SET currently = new.bidmoney WHERE itemID = new.itemID;
 end;
 
-create trigger SELLERNOTBIDDER
-after insert ON BID
-for each row
-when exists(
-	SELECT *
-	FROM ITEMS
-	WHERE itemID = new.itemID AND
-	userID = new.userID
-)
-begin
-	select raise(rollback, 'Seller can not be bidder!');
-end;
-
 create trigger CORRECTBIDTIME
 after insert ON BID
 for each row
@@ -38,8 +25,8 @@ when exists(
 	SELECT *
 	FROM ITEMS
 	WHERE itemID = new.itemID AND
-    startTime > new.bidtime OR
-	endTime < new.bidtime
+    (startTime > new.bidtime OR
+	endTime < new.bidtime)
 )
 begin
 	select raise(rollback, 'This is not a time to bid buddy!');
@@ -64,13 +51,10 @@ begin
 end;
 
 create trigger BIDAMOUNT
-after insert ON BID
+before insert ON BID
 for each row
 when exists(
-	SELECT *
-	FROM BID
-	WHERE itemID = new.itemID AND
-	bidmoney >= new.bidmoney
+	SELECT * from BID where (itemID = new.itemID AND bidmoney >= new.bidmoney)
 )
 begin
 	select raise(rollback, 'BID amount is less than that of previous amount');

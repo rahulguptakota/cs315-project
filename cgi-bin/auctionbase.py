@@ -176,8 +176,8 @@ class add_bids:
 
 		if(item.endTime < currtime):
 			return render_template('add_bids.html', message = 'Auction is ended')
-		
-		if(price < float(item.currently)):
+		price1=float(item.currently[1:])
+		if(price < price1):
 			return render_template('add_bids.html', message = 'Please give me higher price')
 
 		if(sqlitedb.addbid(itemId,userId,price,currtime)):
