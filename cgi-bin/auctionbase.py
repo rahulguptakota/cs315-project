@@ -91,6 +91,7 @@ class search_DB:
 		status = post_params['status']
 		kd = {"itemID": itemId, "category": category, "currently": price, "description": description, "status": status}
 		results = sqlitedb.searchDB(kd)
+		print results[0], "printing results in view"
 		return render_template('search_DB.html', result = results[0])	
 
 class curr_time:

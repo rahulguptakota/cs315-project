@@ -92,8 +92,11 @@ def searchDB(kd):
 	predicate = " AND ".join(conjunction)
 	query_string = query_string + predicate
 	print query_string
-	return query(query_string,{"itemID": kd["itemID"],"category": kd["category"],"currently": kd["currently"],"description": kd["description"],"time": getTime()})
-
+	print kd , "this is kd form data"
+	result = query(query_string,{"itemID": kd["itemID"],"category": kd["category"],"currently": kd["currently"],"description": kd["description"],"time": getTime()})
+	actresult = result[0]
+	print actresult
+	return [actresult]
 def getItem(item):
 	query_string = "SELECT itemID, startTime, endTime FROM ITEMS WHERE itemID=$itemID"
 	results = query(query_string,{"itemID": item})
@@ -178,14 +181,14 @@ def start():
 	print "hello"
 	query_string = "delete from TIME"
 	query(query_string)
-	query_string = " insert into TIME values (1)"#+ int(time.time())
+	query_string = " insert into TIME values ("+str(int(time.time()))+")"
 	query(query_string)
 	starttiming()
 
 def starttiming():
 	print "hello"
 	threading.Timer(1.0, starttiming).start()
-	query_string = "update TIME set currtime = " + str(int(time.time()))
+	query_string = "update TIME set currtime = currtime + 1"
 	query(query_string)
 	print query_string, "this is query string"
 
