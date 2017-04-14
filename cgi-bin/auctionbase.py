@@ -53,12 +53,12 @@ def render_template(template_name, **context):
 urls = ('/currtime', 'curr_time',
         '/selecttime', 'select_time',
         '/addbids' , 'add_bids',
-		'/openbids', 'open_bids',
 		'/searchDB' , 'search_DB',
 		'/auction_search', 'auction_search',
 		# TODO: add additional URLs here
 		# first parameter => URL, second parameter => class name
 		)
+				# '/openbids', 'open_bids',
 
 class auction_search:
 	def GET(self):
@@ -69,9 +69,15 @@ class auction_search:
 		itemIdraw = post_params['itemId']
 		itemId = int(post_params['itemId'])
 		itemInfo = sqlitedb.getItem(itemId)
+<<<<<<< HEAD
 		print "hello world\n"
 		results = sqlitedb.getItemInfo(itemInfo[0])
 		return render_template('auction_search.html', result = results)	
+=======
+		results = sqlitedb.getItemInfo(itemInfo)
+		print results
+		return render_template('auction_search.html', result = results )	
+>>>>>>> 6130db57e30380808c79b8f761b9da363e8faace
 
 
 class search_DB:
@@ -103,9 +109,54 @@ class curr_time:
 		return render_template('curr_time.html', time = current_time)
 
 class select_time:
+    # Aanother GET request, this time to the URL '/selecttime'
+    def GET(self):
+        return render_template('select_time.html')
+
+    # A POST request
+    #
+    # You can fetch the parameters passed to the URL
+    # by calling `web.input()' for **both** POST requests
+    # and GET requests
+    def POST(self):
+        post_params = web.input()
+        MM = post_params['MM']
+        dd = post_params['dd']
+        yyyy = post_params['yyyy']
+        HH = post_params['HH']
+        mm = post_params['mm']
+        ss = post_params['ss']
+        enter_name = post_params['entername']
+
+
+        selected_time = '%s-%s-%s %s:%s:%s' % (yyyy, MM, dd, HH, mm, ss)
+        update_message = '(Hello, %s. Previously selected time was: %s.)' % (enter_name, selected_time)
+        # TODO: save the selected time as the current time in the database
+
+        # Here, we assign `update_message' to `message', which means
+        # we'll refer to it in our template as `message'
+        return render_template('select_time.html', message = update_message)
+
+class add_bids:
+    def GET(self):
+        return render_template('add_bids.html')
+    
+    def POST(self):
+        post_params = web.input()
+        itemId = int(post_params['itemId'])
+        userId = post_params['userId']
+        price = float(post_params['price'])
+        currtime = sqlitedb.getTime()
+        if (itemId == '') or (price == '') or (userId == ''):
+            return render_template('add_bid.html', message = 'You must fill out every field')
+        
+
+        if(sqlitedb.addbid(itemId,userId,price,currtime)):
+            update_message = "Sucess"
+        else:
+            update_message = "Fail"
+        return render_template('add_bids.html', message = update_message)
 	# Aanother GET request, this time to the URL '/selecttime'
-	def GET(self):
-		return render_template('select_time.html')
 
 	# A POST request
 	#
@@ -140,10 +191,25 @@ class add_bids:
 		itemId = int(post_params['itemId'])
 		userId = post_params['userId']
 		price = float(post_params['price'])
-		currtime = 1
+		currtime = sqlitedb.getTime()
 		if (itemId == '') or (price == '') or (userId == ''):
-			return render_template('add_bid.html', message = 'You must fill out every field')
+			return render_template('add_bids.html', message = 'You must fill out every field')
 		
+		user = sqlitedb.getUserById(userId)
+		if user == None:
+			return render_template('add_bids.html', message = 'User does not exist')
+
+		item = sqlitedb.getItemById(itemId)
+
+		if(item == None):
+			return render_template('add_bids.html', message = 'Item does not exists')
+
+		if(item.endTime < currtime):
+			return render_template('add_bids.html', message = 'Auction is ended')
+		
+		if(price < float(item.currently)):
+			return render_template('add_bids.html', message = 'Please give me higher price')
+
 		if(sqlitedb.addbid(itemId,userId,price,currtime)):
 			update_message = "Sucess"
 		else:
