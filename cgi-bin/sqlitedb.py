@@ -94,9 +94,12 @@ def searchDB(kd):
 	print query_string
 	print kd , "this is kd form data"
 	result = query(query_string,{"itemID": kd["itemID"],"category": kd["category"],"currently": kd["currently"],"description": kd["description"],"time": getTime()})
-	actresult = result[0]
+	actresult = []
+	for thing in result:
+		actresult.append(thing)
 	print actresult
-	return [actresult]
+	return [actresult[0]]
+
 def getItem(item):
 	query_string = "SELECT itemID, startTime, endTime FROM ITEMS WHERE itemID=$itemID"
 	results = query(query_string,{"itemID": item})

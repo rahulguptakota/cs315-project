@@ -2,16 +2,66 @@
 {% block content %}
 <h3> SEARCH DATABASE </h3> 
 <form action="searchDB" method="POST">
-  ItemId: <input type="text" name="itemId" id="itemId"><br>
+<!--<div class="form-group row">
+  <label for="example-text-input" class="col-2 col-form-label">ItemID</label>
+  <div class="col-10">
+    <input class="form-control" type="number" name="itemId" id="itemId">
+  </div>
+</div>
+<div class="form-group row">
+  <label for="example-text-input" class="col-2 col-form-label">Category</label>
+  <div class="col-10">
+    <input class="form-control" type="text" name="category" id="category">
+  </div>
+</div>
+<div class="form-group row">
+  <label for="example-text-input" class="col-2 col-form-label">Price: </label>
+  <div class="col-10">
+    <input class="form-control"  type="int"  name="currently" id="currently">
+  </div>
+</div>
+<div class="form-group row">
+  <label for="example-text-input" class="col-2 col-form-label">Description: </label>
+  <div class="col-10">
+    <input class="form-control" type="text" name="description" id="description">
+  </div>
+</div>
+<div class="form-group row">
+  <label for="example-text-input" class="col-2 col-form-label">Status: </label>
+  <div class="col-10">
+    <input class="form-control"  type="text" name="status" id="status">
+  </div>
+</div>-->
+  ItemId: <input type="number" name="itemId" id="itemId"> <br>
   Category: <input type="text" name="category" id="category"><br>
-  Price: <input type="text" name="currently" id="currently"><br>
+  Price: <input type="int" name="currently" id="currently"> <br>
   Description: <input type="text" name="description" id="description"><br>
   Status: <input type="text" name="status" id="status"><br>
   <input type="submit" value="SEARCH">
+  <!--<div class="form-group row">
+  <label for="example-text-input" class="col-2 col-form-label">Status: </label>
+  <div class="col-10">
+    <input class="form-control" type="submit" value="SEARCH">
+  </div>-->
+<!--</div>-->
 </form>
-</center>
 
-{% if result %}
+{% if idnotint %}
+  <h3>PLEASE ENTER INTEGER ID</h3>
+    
+
+
+{% elif idnotint %}
+  <h3>PLEASE ENTER INTEGER ID</h3>
+    
+
+
+{% elif message %}
+  <h3>Result is EMPTY</h3>
+    
+
+
+{% elif result %}
 	<h3>Result</h3>
     <ul>
     {% for item in result %}
@@ -21,7 +71,7 @@
         </li>
     {% endfor %}
     </ul>
-</center>
+
 {% endif %}
 <!--{% if message %}
 <h3>Result</h3>

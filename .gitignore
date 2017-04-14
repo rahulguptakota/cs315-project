@@ -3,3 +3,7 @@ Category
 Items
 Users
 *.pyc
+***.pyc
+cgi-bin/auction.db
+auction.db
+cgi-bin/*.pyc
