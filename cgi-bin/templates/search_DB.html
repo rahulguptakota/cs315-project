@@ -2,37 +2,7 @@
 {% block content %}
 <h3> SEARCH DATABASE </h3> 
 <form action="searchDB" method="POST">
-<!--<div class="form-group row">
-  <label for="example-text-input" class="col-2 col-form-label">ItemID</label>
-  <div class="col-10">
-    <input class="form-control" type="number" name="itemId" id="itemId">
-  </div>
-</div>
-<div class="form-group row">
-  <label for="example-text-input" class="col-2 col-form-label">Category</label>
-  <div class="col-10">
-    <input class="form-control" type="text" name="category" id="category">
-  </div>
-</div>
-<div class="form-group row">
-  <label for="example-text-input" class="col-2 col-form-label">Price: </label>
-  <div class="col-10">
-    <input class="form-control"  type="int"  name="currently" id="currently">
-  </div>
-</div>
-<div class="form-group row">
-  <label for="example-text-input" class="col-2 col-form-label">Description: </label>
-  <div class="col-10">
-    <input class="form-control" type="text" name="description" id="description">
-  </div>
-</div>
-<div class="form-group row">
-  <label for="example-text-input" class="col-2 col-form-label">Status: </label>
-  <div class="col-10">
-    <input class="form-control"  type="text" name="status" id="status">
-  </div>
-</div>-->
-  ItemId: <input type="number" name="itemId" id="itemId"> <br>
+  ItemId: <input type="text" name="itemId" id="itemId"> <br>
   Category: <input type="text" name="category" id="category"><br>
   Price: <input type="int" name="currently" id="currently"> <br>
   Description: <input type="text" name="description" id="description"><br>
@@ -57,21 +27,23 @@
 
 
 {% elif message %}
-  <h3>Result is EMPTY</h3>
+  <h4>{{message}}</h4>
     
 
-
 {% elif result %}
-	<h3>Result</h3>
+</center>
+<h3>Result</h3>
+  {% for listitem in result %}
     <ul>
-    {% for item in result %}
+    {% for item in listitem %}
         <li>
             <p>{{ item }}</p>
-            <p>{{ result[item] }}</p>
+            <p>{{ listitem[item] }}</p>
         </li>
     {% endfor %}
     </ul>
-
+    <h3>--------------------------------------------</h3>
+  {% endfor %}
 {% endif %}
 <!--{% if message %}
 <h3>Result</h3>

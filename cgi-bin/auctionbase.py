@@ -66,8 +66,13 @@ class auction_search:
 
 	def POST(self):
 		post_params = web.input()
-		itemIdraw = post_params['itemId']
-		itemId = int(post_params['itemId'])
+		if post_params['itemId']:
+			if post_params['itemId'].isdigit():
+				itemId = int(post_params['itemId'])
+			else:
+				return render_template('auction_search.html', idnotint = "empty")
+		else:
+			return render_template('auction_search.html', idempty = "empty")		
 		itemInfo = sqlitedb.getItem(itemId)
 		results = sqlitedb.getItemInfo(itemInfo)
 		print results
@@ -80,6 +85,8 @@ class search_DB:
 
 	def POST(self):
 		post_params = web.input()
+		if (not post_params['itemId']) and (not post_params['category']) and (not post_params['currently']) and (not post_params['description']) and (not post_params['status']):
+			return render_template('search_DB.html', message = 'You must fill out atleast one field')
 		if post_params['itemId']:
 			if post_params['itemId'].isdigit():
 				itemId = int(post_params['itemId'])
@@ -95,11 +102,15 @@ class search_DB:
 		description = post_params['description']
 		status = post_params['status']
 		kd = {"itemID": itemId, "category": category, "currently": price, "description": description, "status": status}
-		results = sqlitedb.searchDB(kd)
-		if results:
-			return render_template('search_DB.html', result = results[0])	
+		result = sqlitedb.searchDB(kd)
+		actresult = []
+		for thing in result:
+			actresult.append(thing)
+		print actresult
+		if actresult:
+			return render_template('search_DB.html', result = actresult)	
 		else:
-			return render_template('search_DB.html', message = "empty")
+			return render_template('search_DB.html', message = "Result is EMPTY")
 
 class curr_time:
 	# A simple GET request, to '/currtime'
@@ -108,7 +119,8 @@ class curr_time:
 	# in order to have its value displayed on the web page
 	def GET(self):
 		current_time = sqlitedb.getTime()
-		return render_template('curr_time.html', time = current_time)
+		newtime = current_time
+		return render_template('curr_time.html', msg = newtime)
 
 class select_time:
     # Aanother GET request, this time to the URL '/selecttime'
