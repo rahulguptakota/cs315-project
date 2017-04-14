@@ -85,6 +85,8 @@ class search_DB:
 
 	def POST(self):
 		post_params = web.input()
+		if (not post_params['itemId']) and (not post_params['category']) and (not post_params['currently']) and (not post_params['description']) and (not post_params['status']):
+			return render_template('search_DB.html', message = 'You must fill out atleast one field')
 		if post_params['itemId']:
 			if post_params['itemId'].isdigit():
 				itemId = int(post_params['itemId'])
@@ -108,7 +110,7 @@ class search_DB:
 		if actresult:
 			return render_template('search_DB.html', result = actresult)	
 		else:
-			return render_template('search_DB.html', message = "empty")
+			return render_template('search_DB.html', message = "Result is EMPTY")
 
 class curr_time:
 	# A simple GET request, to '/currtime'
@@ -117,7 +119,8 @@ class curr_time:
 	# in order to have its value displayed on the web page
 	def GET(self):
 		current_time = sqlitedb.getTime()
-		return render_template('curr_time.html', time = current_time)
+		newtime = current_time
+		return render_template('curr_time.html', msg = newtime)
 
 class select_time:
     # Aanother GET request, this time to the URL '/selecttime'
@@ -178,7 +181,7 @@ class add_bids:
 			return render_template('add_bids.html', message = 'Please give me higher price')
 
 		if(sqlitedb.addbid(itemId,userId,price,currtime)):
-			update_message = "Sucess"
+			update_message = "Success"
 		else:
 			update_message = "Fail"
 		return render_template('add_bids.html', message = update_message)

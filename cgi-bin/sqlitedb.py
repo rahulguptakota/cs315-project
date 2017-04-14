@@ -1,6 +1,7 @@
 import web
 import threading
 import time
+currentTime = 0
 db = web.database(dbn='sqlite',
 		db='auction.db' #TODO: add your SQLite database filename
 	)
@@ -44,29 +45,29 @@ def getTime():
 # Note: if the `result' list is empty (i.e. there are no items for a
 # a given ID), this will throw an Exception!
 def getItemById(item_id):
-    # TODO: rewrite this method to catch the Exception in case `result' is empty
-    query_string = 'select * from ITEMS where itemID = $itemID'
-    result = query(query_string, {'itemID': item_id})
-    return result[0]
+	# TODO: rewrite this method to catch the Exception in case `result' is empty
+	query_string = 'select * from ITEMS where itemID = $itemID'
+	result = query(query_string, {'itemID': item_id})
+	return result[0]
 
 
 def getUserById(user_id):
-    query_string = 'select * from USER where userID = $userID'
-    result = query(query_string, {'userID': user_id})
-    return result[0]
+	query_string = 'select * from USER where userID = $userID'
+	result = query(query_string, {'userID': user_id})
+	return result[0]
 
 def searchDB(kd):
 	def getStatusString(status):
-		if status == "open":
+		if "open" in status:
 			return "I.startTime <= $time AND I.endTime > $time"
-		elif status == "close":
+		elif "close" in status:
 			return "I.endTime <= $time"
 		elif status == "notStarted":
 			return "I.startTime > $time"
 		else:
 			return "1 = 1"
 	keys = ["itemID","category","currently","description","status"]        
-	query_string = "SELECT * FROM ITEMS I where "	
+	query_string = "SELECT * FROM ITEMS I, CATEGORY C where "	
 	conjunction = []
 	itemID = "I.itemID = $itemID"
 	category = "C.name = $category AND I.itemID = C.itemID"
@@ -79,6 +80,7 @@ def searchDB(kd):
 	if not kd["itemID"]:
 		itemID = "1=1"
 	if not kd["category"]:
+		query_string = "SELECT * FROM ITEMS I where "	
 		category = "1=1"
 	if not kd["currently"]:
 		currently = "1=1"
@@ -92,7 +94,9 @@ def searchDB(kd):
 	predicate = " AND ".join(conjunction)
 	query_string = query_string + predicate
 	print query_string
-	return query(query_string,{"itemID": kd["itemID"],"category": kd["category"],"currently": kd["currently"],"description": kd["description"],"time": str(getTime())})
+	print kd , "this is kd form data"
+	result = query(query_string,{"itemID": kd["itemID"],"category": kd["category"],"currently": kd["currently"],"description": kd["description"],"time": getTime()})
+	return result
 
 def getItem(item):
 	query_string = "SELECT itemID, startTime, endTime FROM ITEMS WHERE itemID=$itemID"
@@ -175,17 +179,22 @@ def startprocesses():
 	start()
 
 def start():
+	global currentTime
 	print "hello"
 	query_string = "delete from TIME"
 	query(query_string)
-	query_string = " insert into TIME values (1)"#+ int(time.time())
+	# currentTime = int(time.time())
+	currentTime = 1009000000
+	query_string = " insert into TIME values ("+str(currentTime)+")"
 	query(query_string)
 	starttiming()
 
 def starttiming():
+	global currentTime
 	print "hello"
 	threading.Timer(1.0, starttiming).start()
-	query_string = "update TIME set currtime = " + str(int(time.time()))
+	currentTime = currentTime + 1
+	query_string = "update TIME set currtime = " + str(currentTime)
 	query(query_string)
 	print query_string, "this is query string"
 

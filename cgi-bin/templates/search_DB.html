@@ -8,24 +8,30 @@
   Description: <input type="text" name="description" id="description"><br>
   Status: <input type="text" name="status" id="status"><br>
   <input type="submit" value="SEARCH">
+  <!--<div class="form-group row">
+  <label for="example-text-input" class="col-2 col-form-label">Status: </label>
+  <div class="col-10">
+    <input class="form-control" type="submit" value="SEARCH">
+  </div>-->
+<!--</div>-->
 </form>
-</center>
 
 {% if idnotint %}
   <h3>PLEASE ENTER INTEGER ID</h3>
     
-</center>
+
 
 {% elif idnotint %}
   <h3>PLEASE ENTER INTEGER ID</h3>
     
-</center>
+
 
 {% elif message %}
-  <h3>Result is EMPTY</h3>
+  <h4>{{message}}</h4>
     
-</center>
+
 {% elif result %}
+</center>
 <h3>Result</h3>
   {% for listitem in result %}
     <ul>
@@ -38,7 +44,6 @@
     </ul>
     <h3>--------------------------------------------</h3>
   {% endfor %}
-</center>
 {% endif %}
 <!--{% if message %}
 <h3>Result</h3>
