@@ -2,7 +2,7 @@
 {% block content %}
 <h3> SEARCH DATABASE </h3> 
 <form action="searchDB" method="POST">
-  ItemId: <input type="number" name="itemId" id="itemId"> <br>
+  ItemId: <input type="text" name="itemId" id="itemId"> <br>
   Category: <input type="text" name="category" id="category"><br>
   Price: <input type="int" name="currently" id="currently"> <br>
   Description: <input type="text" name="description" id="description"><br>
@@ -25,17 +25,19 @@
   <h3>Result is EMPTY</h3>
     
 </center>
-
 {% elif result %}
-	<h3>Result</h3>
+<h3>Result</h3>
+  {% for listitem in result %}
     <ul>
-    {% for item in result %}
+    {% for item in listitem %}
         <li>
             <p>{{ item }}</p>
-            <p>{{ result[item] }}</p>
+            <p>{{ listitem[item] }}</p>
         </li>
     {% endfor %}
     </ul>
+    <h3>--------------------------------------------</h3>
+  {% endfor %}
 </center>
 {% endif %}
 <!--{% if message %}

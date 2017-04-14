@@ -66,8 +66,13 @@ class auction_search:
 
 	def POST(self):
 		post_params = web.input()
-		itemIdraw = post_params['itemId']
-		itemId = int(post_params['itemId'])
+		if post_params['itemId']:
+			if post_params['itemId'].isdigit():
+				itemId = int(post_params['itemId'])
+			else:
+				return render_template('auction_search.html', idnotint = "empty")
+		else:
+			return render_template('auction_search.html', idempty = "empty")		
 		itemInfo = sqlitedb.getItem(itemId)
 		results = sqlitedb.getItemInfo(itemInfo)
 		print results
@@ -95,9 +100,13 @@ class search_DB:
 		description = post_params['description']
 		status = post_params['status']
 		kd = {"itemID": itemId, "category": category, "currently": price, "description": description, "status": status}
-		results = sqlitedb.searchDB(kd)
-		if results:
-			return render_template('search_DB.html', result = results[0])	
+		result = sqlitedb.searchDB(kd)
+		actresult = []
+		for thing in result:
+			actresult.append(thing)
+		print actresult
+		if actresult:
+			return render_template('search_DB.html', result = actresult)	
 		else:
 			return render_template('search_DB.html', message = "empty")
 

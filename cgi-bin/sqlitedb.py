@@ -66,7 +66,7 @@ def searchDB(kd):
 		else:
 			return "1 = 1"
 	keys = ["itemID","category","currently","description","status"]        
-	query_string = "SELECT * FROM ITEMS I, CATEGORY C WHERE "
+	query_string = "SELECT * FROM ITEMS I where "	
 	conjunction = []
 	itemID = "I.itemID = $itemID"
 	category = "C.name = $category AND I.itemID = C.itemID"
