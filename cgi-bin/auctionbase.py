@@ -181,7 +181,8 @@ class add_bids:
 
 		if(item.endTime < currtime):
 			return render_template('add_bids.html', message = 'Auction is ended')
-		price1=float(item.currently[1:])
+		price1 = float(item.currently)
+		print price1
 		if(price < price1):
 			return render_template('add_bids.html', message = 'Please give me higher price')
 
