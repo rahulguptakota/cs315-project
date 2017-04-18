@@ -55,10 +55,15 @@ urls = ('/currtime', 'curr_time',
         '/addbids' , 'add_bids',
 		'/searchDB' , 'search_DB',
 		'/auction_search', 'auction_search',
+		'/', 'index'
 		# TODO: add additional URLs here
 		# first parameter => URL, second parameter => class name
 		)
 				# '/openbids', 'open_bids',
+
+class index:
+	def GET(self):
+		return render_template('index.html')
 
 class auction_search:
 	def GET(self):
