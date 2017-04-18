@@ -53,6 +53,7 @@ def render_template(template_name, **context):
 urls = ('/currtime', 'curr_time',
         '/selecttime', 'select_time',
         '/addbids' , 'add_bids',
+	'/','index'
 		'/searchDB' , 'search_DB',
 		'/auction_search', 'auction_search',
 		# TODO: add additional URLs here
