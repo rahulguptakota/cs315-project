@@ -53,10 +53,9 @@ def render_template(template_name, **context):
 urls = ('/currtime', 'curr_time',
         '/selecttime', 'select_time',
         '/addbids' , 'add_bids',
-	'/','index'
 		'/searchDB' , 'search_DB',
 		'/auction_search', 'auction_search',
-		'/', 'index'
+		'/', 'index',
 		# TODO: add additional URLs here
 		# first parameter => URL, second parameter => class name
 		)
@@ -182,7 +181,8 @@ class add_bids:
 
 		if(item.endTime < currtime):
 			return render_template('add_bids.html', message = 'Auction is ended')
-		price1=float(item.currently[1:])
+		price1 = float(item.currently)
+		print price1
 		if(price < price1):
 			return render_template('add_bids.html', message = 'Please give me higher price')
 
